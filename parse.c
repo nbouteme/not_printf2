@@ -44,18 +44,19 @@ void parse_type(const char **s, t_fmt *f)
 ** i: ième format parsé
 */
 
-t_fmt _parse_spec(const char **s, int n)
+t_fmt _parse_spec(const char **s, u32 *n)
 {
 	t_fmt f;
 	ft_bzero(&f, sizeof(f));
-	f.param = n;
+	f.param = -1;
 	parse_parameter(s, &f);
 	parse_flags(s, &f);
-	parse_width(s, &f);
-	parse_precision(s, &f);
+	parse_width(s, &f, n);
+	parse_precision(s, &f, n);
 	parse_length(s, &f);
 	parse_type(s, &f);
 	infer_flags(&f);
+	f.param = f.param == -1 ? *n : f.param;
 	0[s]--;
 	return (f);
 }
@@ -63,7 +64,7 @@ t_fmt _parse_spec(const char **s, int n)
 /*
 ** Wrapper qui renvoie la structure sous forme de maillon.
 */
-t_dlist *parse_spec(const char **s, int n)
+t_dlist *parse_spec(const char **s, u32 *n)
 {
 	t_fmt f;
 
@@ -85,7 +86,7 @@ t_dlisthead *parse_fmt(const char *s, va_list ap)
 	while (*s)
 	{
 		if (*s == '%')
-			ftext_lstpush_back(l, parse_spec(&s, ++i));
+			ftext_lstpush_back(l, parse_spec(&s, (++i, &i)));
 		++s;
 	}
 	//ftext_lstiter(l, &dump_state);

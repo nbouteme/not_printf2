@@ -1,7 +1,6 @@
 #include "ft_printf.h"
 #include <stdio.h>
 
-
 void dump_state(t_dlist *e)
 {
 	return;
@@ -32,6 +31,9 @@ void dump_state(t_dlist *e)
 
 int main(int argc, char *argv[])
 {
-	ft_printf("%2$s%1$s%1$skek\n", "tr", "train");
+	//ft_printf("%-5s\n", "tr");
+	//ft_printf("%5s\n", "tr");
+	ft_printf("%*s\n", -5, "tr");
+	printf("%*s\n", -5, "tr");
 	//printf("%5.2s\n", "train, train");
 }

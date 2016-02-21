@@ -18,7 +18,7 @@ u64 print_f(const char *fmt, t_dlisthead *args)
 		total += write(1, s, e - s);
 		s = e;
 		if (*s == '%')
-			total += print_spec(&s, args, ++i);
+			total += print_spec(&s, args, (++i, &i));
 		s += !!*s;
 	}
 	return (total);

@@ -51,11 +51,13 @@ void read_and_fill(t_dlist *e, t_data_param *arg)
 	t_fmt *f;
 
 	f = e->content;
-	if(f->width_i > 0)
+	if (f->width_i > 0)
 		f->width = (long)pop_take_or_gtfo(f->width_i, arg);
-	if(f->precision_i > 0)
+	if (f->width_i == 0 && f->width == -1)
+		f->width = (long)pop_take_or_gtfo(f->param - 1 - f->precision < 0, arg);
+	if (f->precision_i > 0)
 		f->precision = (long)pop_take_or_gtfo(f->precision_i, arg);
-	if(f->param == arg->i)
+	if (f->param == arg->i)
 	{
 		f->data = &arg->datas[arg->i];
 		f->data->c = pop_take_or_gtfo(f->param, arg);
