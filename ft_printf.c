@@ -6,7 +6,7 @@ u64 print_f(const char *fmt, t_dlisthead *args)
 	const char *s;
 	const char *e;
 	u64 total;
-	
+
 	total = 0;
 	i = 0;
 	s = fmt;
@@ -24,17 +24,24 @@ u64 print_f(const char *fmt, t_dlisthead *args)
 	return (total);
 }
 
-int ft_printf(const char *fmt, ...)
+int ft_vprintf(const char *fmt, va_list ap)
 {
-	va_list ap;
 	t_dlisthead *args;
 	u64 total;
 
-	va_start(ap, fmt);
 	args = parse_fmt(fmt, ap);
 	total = print_f(fmt, args);
-	//ftext_lstiter(args, &dump_state);
-	va_end(ap);
 	ftext_lstdel(&args, free_format);
 	return (total);
+}
+
+int ft_printf(const char *fmt, ...)
+{
+	va_list ap;
+	int ret;
+
+	va_start(ap, fmt);
+	ret = ft_vprintf(fmt, ap);
+	va_end(ap);
+	return (ret);
 }

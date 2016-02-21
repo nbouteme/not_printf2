@@ -18,12 +18,14 @@ u64 f_print_s(t_fmt *arg)
 
 	tot = 0;
 	n = ft_strlen(arg->data->c);
+	n = arg->precision < 0 || arg->precision > n ? n : arg->precision;
 	arg->flags[0] |= arg->width < 0;
 	arg->width = arg->width < 0 ? -arg->width : arg->width;
+	arg->width = arg->width <= n ? n : arg->width;
 	if (arg->width > n && !arg->flags[0])
 		tot += print_n(arg->width - n, ' ');
 	if (arg->precision > 0)
-		tot += write(1, arg->data->c, arg->precision > n ? n : arg->precision);
+		tot += write(1, arg->data->c, n);
 	else
 		tot += write(1, arg->data->c, n);
 	if (arg->flags[0])

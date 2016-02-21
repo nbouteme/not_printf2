@@ -65,6 +65,7 @@ void			parse_parameter(const char **s, t_fmt *f);
 u64				print_spec(const char **s, t_dlisthead *args, u32 *i);
 i32				cmp_forder(const t_dlist *_a, const t_dlist *_b);
 i32				cmp_spec(t_dlist *e, t_fmt *f);
+int				ft_vprintf(const char *fmt, va_list ap);
 
 int ft_printf(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
 
