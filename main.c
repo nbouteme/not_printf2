@@ -52,7 +52,7 @@ char	*readfile(int fd)
 	return (ret);
 }
 
-char *get_out(int (*f)(const char *, va_list), const char *fmt, va_list ap)
+char *get_out(int (*f)(const char *, va_list), const char *fmt, va_list ap, int *n)
 {
 	int out[2];
 	int e;
@@ -64,7 +64,7 @@ char *get_out(int (*f)(const char *, va_list), const char *fmt, va_list ap)
 	int so = dup(1);
 	dup2(out[1], 1);
 	close(out[1]);
-	f(fmt, ap);
+	*n = f(fmt, ap);
 	fflush(stdout);
 	fcntl(out[0], F_SETFL, O_NONBLOCK);
 	char *ret = readfile(out[0]);
@@ -82,21 +82,53 @@ void test_printf(const char *fmt, ...)
 	va_start(ap, fmt);
 	va_copy(ad, ap);
 
-	char *v = get_out(vprintf, fmt, ap);
-	char *ft_v = get_out(ft_vprintf, fmt, ad);
-	if(strcmp(ft_v, v) == 0)
+	int n, m;
+	char *v = get_out(vprintf, fmt, ap, &n);
+	char *ft_v = get_out(ft_vprintf, fmt, ad, &m);
+	if(strcmp(ft_v, v) == 0 && n == m)
 		printf("[OK]: %s\n", v), fflush(stdout);
-	else
+	else if (n == m)
 		printf("[FAIL]: Expected [%s], got [%s]\n", v, ft_v), fflush(stdout);
+	else
+		printf("[FAIL]: Should have written %d bytes, but wrote %d\n", n, m), fflush(stdout);
 	va_end(ap);
 }
 
+#include <locale.h>
+
 int main(int argc, char *argv[])
-{
+{/*
+	int *n = L"今日わ";
+	char *k = "今日わ";
 	test_printf("%s", "train, train");
 	test_printf("%5s", "train, train");
 	test_printf("%*s", -5, "tr");
 	test_printf("%5s", "tr");
 	test_printf("%5.2s", "train, train");
+	test_printf("%5.13s", "tr");
 	test_printf("%-5s", "train, train");
+	test_printf("%7s", (void *)0);
+	test_printf("%*s", -7, (void *)0);
+	test_printf("%7s", (void *)0);
+	test_printf("%7.2s", (void *)0);
+	test_printf("%7.13s", (void *)0);
+	test_printf("%-7s", (void *)0);
+	test_printf("%2$*1$.*3$s", 4, "train, train", 5);
+	test_printf("%2$*1$.*3$s", -4, "train, train", 5);
+	test_printf("%2$*1$.*3$s", -4, "train, train", -5);
+	test_printf("%2$*1$.*3$s", 4, "train, train", -5);
+	test_printf("%2$*1$.*3$s", 4, "train, train", 1);
+	test_printf("%2$*1$.*3$s", -4, "train, train", 1);
+	test_printf("%2$*1$.*3$s", -4, "train, train", -1);
+	test_printf("%2$*1$.*3$s", 4, "train, train", -1);
+	test_printf("%2$*1$.5s", 5, "train, train");
+	test_printf("%1$-5.*2$s", "train, train", 5);
+	test_printf("%2$-5.*1$s", 5, "train, train");
+	test_printf("%2$*1$.*3$s", -5, "train, train", -5);
+	test_printf("%2$*1$.*3$s", 5, "train, train", -5);
+	test_printf("%2$*1$.*3$s", 5, (char *)0, -5);
+	test_printf("%2$*1$.*3$s == topkek %4$s", 5, (char *)0, -5, "(not null)");
+	test_printf("%s", "今日わ");
+	test_printf("%ls", L"今日わ");*/
+	printf("%42.32d", 4254);
 }
