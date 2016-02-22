@@ -80,7 +80,7 @@ t_dlisthead *parse_fmt(const char *s, va_list ap)
 {
 	t_dlisthead *l;
 	u32 i;
-	
+
 	l = ftext_lstnew();
 	i = 0;
 	while (*s)

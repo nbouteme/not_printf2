@@ -1,9 +1,11 @@
 #include "ft_printf.h"
 
-u64 print_n(u64 n, char c)
+u64 print_n(i64 n, char c)
 {
 	void *m;
 
+	if(n <= 0)
+		return (0);
 	m = malloc(n);
 	ft_memset(m, c, n);
 	write(1, m, n);
@@ -55,29 +57,29 @@ u64 f_print_p(t_fmt *arg)
 	return 0;
 }
 
-u64 f_print_d(t_fmt *arg)
+u64 f_print_d(t_fmt *a)
 {
 	u64 tot;
 	u64 disp;
 	char *top;
+	u64 n;
 
 	tot = 0;
-	disp = arg->data->c | (arg->data->c & (0x80000000 * 0xFFFFFFFF00000000));
-	top = ft_lsitoa(disp);
-	free(top);
-
-	arg->data->c = arg->data->c ? arg->data->c : "(null)";
+	disp = (u64)a->data->c | (!!((u64)a->data->c & (1L << 31)) * (~0L << 32));
+	top = ft_lsitoa(disp, "0123456789");
 	n = ft_strlen(top);
-	arg->flags[0] |= arg->width < 0;
-	arg->width = arg->width < 0 ? -arg->width : arg->width;
-	if (arg->width > n && !arg->flags[0])
-		tot += print_n(arg->width - n, ' ');
-	if (arg->precision > 0)
-		tot += write(1, arg->data->c, n);
-	else
-		tot += write(1, arg->data->c, n);
-	if (arg->flags[0])
-		tot += print_n(arg->width - n, ' ');
+	a->precision > 0 && !a->flags[3] && (tot += print_n(a->precision - n, '0'));
+	a->flags[0] |= a->width < 0;
+	a->width = a->width < 0 ? -a->width : a->width;
+	a->width -= (a->flags[1] || a->flags[2]) && disp > 0;
+	(a->flags[1] || a->flags[2]) && disp > 0 &&	write(1, &"+ "[a->flags[2]], 1)
+		&& ++tot;
+	disp = a->width - n - (a->precision > 0 ? a->precision : 0);
+	a->width > n && !a->flags[0] && (tot += print_n(disp, " 0"[a->flags[3]]));
+	tot += write(1, top, n);
+	if (a->flags[0])
+		tot += print_n(a->width - (a->precision > 0) - n, ' ');
+	free(top);
 	return (tot);
 }
 

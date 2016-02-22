@@ -50,7 +50,7 @@ void parse_precision(const char **s, t_fmt *f, u32 *i)
 		s[0]++;
 		i[0]++;
 		f->precision_i = ft_isdigit(s[0][0]) ? ft_atoi(s[0])
-			: f->param - 1;
+			: i[0] - 1;
 		while (ft_isdigit(s[0][0])) s[0]++;
 		s[0] += s[0][0] == '$';
 		return ;

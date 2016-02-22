@@ -90,16 +90,14 @@ void test_printf(const char *fmt, ...)
 	else if (n == m)
 		printf("[FAIL]: Expected [%s], got [%s]\n", v, ft_v), fflush(stdout);
 	else
-		printf("[FAIL]: Should have written %d bytes, but wrote %d\n", n, m), fflush(stdout);
+		printf("[FAIL]: Should have written %d bytes, but wrote %d, expected output was [%s], got [%s]\n", n, m, v, ft_v), fflush(stdout);
 	va_end(ap);
 }
 
 #include <locale.h>
 
 int main(int argc, char *argv[])
-{/*
-	int *n = L"今日わ";
-	char *k = "今日わ";
+{
 	test_printf("%s", "train, train");
 	test_printf("%5s", "train, train");
 	test_printf("%*s", -5, "tr");
@@ -129,6 +127,20 @@ int main(int argc, char *argv[])
 	test_printf("%2$*1$.*3$s", 5, (char *)0, -5);
 	test_printf("%2$*1$.*3$s == topkek %4$s", 5, (char *)0, -5, "(not null)");
 	test_printf("%s", "今日わ");
-	test_printf("%ls", L"今日わ");*/
-	printf("%42.32d", 4254);
+	test_printf("%.*s", 5, "train train");
+	test_printf("%d", 42);
+	test_printf("%10d", 42);
+	test_printf("%-10d", 42);
+	test_printf("%.5d", 42);
+	test_printf("%.*d", -5, 42);
+	test_printf("%*d", -5, 42);
+	test_printf("% *d", -5, 42);
+	test_printf("% *d", 6, 1234);
+	test_printf("% *d", 5, 1234);
+	test_printf("% *d", 4, 1234);
+	test_printf("% d", 1234);
+	test_printf("%0 8d", 1234);
+	test_printf("%0+8d", 1234);
+	test_printf("%d", -42);
+	//ft_printf("%.*d", 5, 42);
 }
