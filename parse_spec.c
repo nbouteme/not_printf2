@@ -25,6 +25,8 @@ void infer_flags(t_fmt *f)
 		f->flags[3] = 0;
 	if (f->flags[1])
 		f->flags[2] = 0;
+	if (f->length == 8)
+		f->type.lf = 1;
 }
 
 void parse_flags(const char **s, t_fmt *f)

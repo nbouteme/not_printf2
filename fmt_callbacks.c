@@ -7,6 +7,7 @@ void free_format(void *content, size_t size)
 {
 	t_fmt *f;
 
+	(void)size;
 	f = content;
 	free(f->data);
 	free(f);

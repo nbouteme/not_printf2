@@ -22,6 +22,7 @@ void save_data(t_dlist *e, t_data_param *arg)
 {
 	t_fmt *f;
 
+	(void)arg;
 	f = e->content;
 	f->data = ft_memcpy(malloc(sizeof(t_data)), f->data, sizeof(t_data));
 }

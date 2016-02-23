@@ -68,5 +68,10 @@ i32				cmp_spec(t_dlist *e, t_fmt *f);
 int				ft_vprintf(const char *fmt, va_list ap);
 
 int ft_printf(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
+u64 f_print_s(t_fmt *arg);
+u64 f_print_d(t_fmt *a);
+u64 print_n(i64 n, char c);
+u64 f_print_o(t_fmt *a);
+u64 f_print_x(t_fmt *a);
 
 #endif

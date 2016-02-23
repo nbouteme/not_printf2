@@ -2,27 +2,26 @@
 
 void parse_length(const char **s, t_fmt *f)
 {
-	s32 sz;
 	s32 i;
 	const i8 *one = "hljz";
 
 	i = ft_strindexof(one, **s);
-	sz = 4;
+	f->length = 4;
+	if (i == -1)
+		return ;
 	f->type.lf = i == 1;
-	if (i == 1)
-		sz >>= 1;
-	else if (i > 1)
-		sz <<= 1;
+	f->length <<= !!i;
+	f->length >>= !i;
+	0[s]++;
 	if (i != -1)
 	{
-		0[s]++;
 		i = ft_strindexof(one, **s);
-		if (i == 1)
-			sz >>= 1;
-		else if (i > 1)
-			sz <<= 1;
+		if (i == -1)
+			return ;
+		0[s]++;
+		f->length <<= !!i;
+		f->length >>= !i;
 	}
-	f->length = sz;
 }
 
 void parse_type(const char **s, t_fmt *f)
