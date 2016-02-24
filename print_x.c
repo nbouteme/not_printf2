@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 16:13:03 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/23 16:22:14 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/24 12:20:22 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,62 @@
 char *g_xconv[] = {"0123456789abcdef", "0123456789ABCDEF"};
 char *g_hash[] = {"0x", "0X"};
 
-u64 f_print_x(t_fmt *a)
+static i64	max(i64 a, i64 b)
 {
-	u64 tot;
-	s64 disp;
-	char *top;
-	s64 n;
+	return (a > b ? a : b);
+}
 
-	tot = 0;
-	disp = (u64)a->data->c;
-	top = ft_luitoa(disp, g_xconv[a->type.c == 'X']);
-	n = ft_strlen(top);
+static int	calc_size(t_fmt *a, i64 len, i64 val)
+{
+	int	total;
+
+	total = max(len, a->precision) + (!a->flags[0] &&
+		(a->flags[1] || a->flags[2]));
+	total += (a->flags[4] && val) << 1;
+	return (total);
+}
+
+static u64	actually_write_this_shit(t_fmt *a, i64 len, char *t)
+{
+	u64 total;
+
+	total = 0;
+	if ((a->flags[4] && t[0] - 48) || a->type.c == 'p')
+	{
+		total += write(1, g_hash[a->type.c == 'X'], 2);
+		a->width -= !a->flags[0] << 1;
+	}
+	total += print_n(a->precision - len, '0');
+	if (a->flags[4] || t[0] - 48)
+		total += write(1, t, len);
+	else if (a->width > 0)
+		total += write(1, " ", 1);
+	return (total);
+}
+
+u64			f_print_x(t_fmt *a)
+{
+	u64	r;
+	i64	d;
+	i8	*t;
+	i64	n;
+	i64 w;
+
+	r = 0;
+	d = (u64)a->data->c;
+	t = ft_luitoa(d, g_xconv[a->type.c == 'X']);
+	n = ft_strlen(t);
+	a->flags[3] &= a->precision < 0;
 	a->flags[0] |= a->width < 0;
 	a->width = a->width < 0 ? -a->width : a->width;
-	a->width -= (a->flags[1] || a->flags[2]) && disp >= 0;
-	a->width -= (a->flags[4] && (top[0] - 48 || a->type.c == 'p')) << 1;
-	disp = a->width - n - (a->precision > n ? a->precision : 0);
-	a->width > n && !a->flags[0] && (tot += print_n(disp, " 0"[a->flags[3]]));
-	if(a->flags[4] && ((top[0] - 48) || a->type.c == 'p'))
-		tot += write(1, g_hash[a->type.c == 'X'], 2);
-	a->precision > 0 && !a->flags[3] && (tot += print_n(a->precision - n, '0'));
-	(a->precision || top[0] - 48) && (tot += write(1, top, n));
+	a->precision = a->flags[3] ? a->width - (a->width > n) : a->precision;
+	a->width = a->flags[3] ? 0 : a->width;
+	w = calc_size(a, n, d);
+	if (!a->flags[0])
+		r += print_n(a->width - w, ' ');
+	r += actually_write_this_shit(a, n, t);
 	if (a->flags[0])
-		tot += print_n(a->width - (a->precision > 0) - n, ' ');
-	free(top);
-	return (tot);
+		r += print_n(a->width - w, ' ');
+	free(t);
+	return (r);
 }

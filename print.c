@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 16:06:11 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/23 17:06:36 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/24 10:51:19 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,12 @@ typedef struct	s_fmt_fun_assoc
 	t_fmt_fun f;
 }				t_fmt_fun_assoc;
 
+u64 f_print_naught(t_fmt *a)
+{
+	(void)a;
+	return (0);
+}
+
 const t_fmt_fun_assoc g_kek[] =
 {
 	{ 's', &f_print_s },
@@ -129,7 +135,7 @@ const t_fmt_fun_assoc g_kek[] =
 	{ 'U', &f_print_u },
 	{ 'O', &f_print_o },
 	{ 'S', &f_print_bs },
-	{ 0, 0 }
+	{ 0, &f_print_naught }
 };
 
 t_fmt_fun fun_at(char c)
@@ -142,7 +148,7 @@ t_fmt_fun fun_at(char c)
 			return g_kek[i].f;
 		else
 			++i;
-	return 0;
+	return &f_print_naught;
 }
 
 void truncate_val(t_fmt *a)
@@ -152,7 +158,7 @@ void truncate_val(t_fmt *a)
 		return ;
 	val = (u64)a->data->c;
 	val &= ((1l << (a->length << 3)) - 1);
-	//a->data->c = (void *)val;
+	a->data->c = (void *)val;
 }
 
 u64 print_spec(const char **s, t_dlisthead *args, u32 *i)
