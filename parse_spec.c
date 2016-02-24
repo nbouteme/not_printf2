@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_spec.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/24 13:24:22 by nbouteme          #+#    #+#             */
+/*   Updated: 2016/02/24 13:25:01 by nbouteme         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-void parse_parameter(const char **s, t_fmt *f)
+void	parse_parameter(const char **s, t_fmt *f)
 {
-	const i8 *str;
+	const t_i8 *str;
 
 	if (**s != '%')
 		return ;
@@ -17,7 +29,7 @@ void parse_parameter(const char **s, t_fmt *f)
 	}
 }
 
-void infer_flags(t_fmt *f)
+void	infer_flags(t_fmt *f)
 {
 	if (f->precision_i > 0 || f->precision >= 0)
 		f->flags[3] = 0;
@@ -29,9 +41,9 @@ void infer_flags(t_fmt *f)
 		f->type.lf = 1;
 }
 
-void parse_flags(const char **s, t_fmt *f)
+void	parse_flags(const char **s, t_fmt *f)
 {
-	s32 i;
+	t_s32 i;
 
 	while ((i = ft_strindexof("-+ 0#", **s)) != -1)
 	{
@@ -40,7 +52,7 @@ void parse_flags(const char **s, t_fmt *f)
 	}
 }
 
-void parse_precision(const char **s, t_fmt *f, u32 *i)
+void	parse_precision(const char **s, t_fmt *f, t_u32 *i)
 {
 	f->precision_i = -1;
 	f->precision = -1;
@@ -53,7 +65,8 @@ void parse_precision(const char **s, t_fmt *f, u32 *i)
 		i[0]++;
 		f->precision_i = ft_isdigit(s[0][0]) ? ft_atoi(s[0])
 			: i[0] - 1;
-		while (ft_isdigit(s[0][0])) s[0]++;
+		while (ft_isdigit(s[0][0]))
+			s[0]++;
 		s[0] += s[0][0] == '$';
 		return ;
 	}
@@ -62,13 +75,14 @@ void parse_precision(const char **s, t_fmt *f, u32 *i)
 		0[s]++;
 }
 
-void parse_width(const char **s, t_fmt *f, u32 *i)
+void	parse_width(const char **s, t_fmt *f, t_u32 *i)
 {
 	if (s[0][0] == '*' && ++i[0] && ++s[0])
 	{
 		f->width_i = ft_isdigit(s[0][0]) ? ft_atoi(s[0])
 			: i[0] - 1;
-		while (ft_isdigit(s[0][0])) s[0]++;
+		while (ft_isdigit(s[0][0]))
+			s[0]++;
 		s[0] += s[0][0] == '$';
 		return ;
 	}

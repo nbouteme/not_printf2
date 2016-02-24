@@ -1,16 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   callbacks.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/24 13:03:58 by nbouteme          #+#    #+#             */
+/*   Updated: 2016/02/24 13:05:25 by nbouteme         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 /*
 ** Trie la liste en fonction de l'ordre d'utilisation des parametres
 ** Permet d'éviter de trop compter sur la seconde passe.
- */
-int cmp_forder(const t_dlist *_a, const t_dlist *_b)
+*/
+
+int		cmp_forder(const t_dlist *ba, const t_dlist *bb)
 {
 	t_fmt *a;
 	t_fmt *b;
 
-	a = _a->content;
-	b = _b->content;
+	a = ba->content;
+	b = bb->content;
 	return (a->param - b->param);
 }
 
@@ -18,7 +31,8 @@ int cmp_forder(const t_dlist *_a, const t_dlist *_b)
 ** Copie les données référencé du tableau datas de la fonction
 ** fill_data.(Callback)
 */
-void save_data(t_dlist *e, t_data_param *arg)
+
+void	save_data(t_dlist *e, t_data_param *arg)
 {
 	t_fmt *f;
 
@@ -29,8 +43,9 @@ void save_data(t_dlist *e, t_data_param *arg)
 
 /*
 ** Callback utilisé pour déterminer le nombre d'arguments passés
- */
-void max_n(t_dlist *e, int *max)
+*/
+
+void	max_n(t_dlist *e, int *max)
 {
 	t_fmt *f;
 
@@ -46,8 +61,9 @@ void max_n(t_dlist *e, int *max)
 /*
 ** read_and_fill se content de déterminer si un parametre doit etre lu
 ** ou non, et peut causer quelques assignations redondant but whatever.
- */
-void read_and_fill(t_dlist *e, t_data_param *arg)
+*/
+
+void	read_and_fill(t_dlist *e, t_data_param *arg)
 {
 	t_fmt *f;
 

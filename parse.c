@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/24 13:21:43 by nbouteme          #+#    #+#             */
+/*   Updated: 2016/02/24 14:11:07 by nbouteme         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-void parse_length(const char **s, t_fmt *f)
+void		parse_length(const char **s, t_fmt *f)
 {
-	s32 i;
-	const i8 *one = "hljz";
+	t_s32		i;
+	const t_i8	*one = "hljz";
 
 	i = ft_strindexof(one, **s);
 	f->length = 4;
@@ -24,10 +36,10 @@ void parse_length(const char **s, t_fmt *f)
 	}
 }
 
-void parse_type(const char **s, t_fmt *f)
+void		parse_type(const char **s, t_fmt *f)
 {
-	s32 i;
-	const i8 *t = "diouxspXDOUSC%";
+	t_s32		i;
+	const t_i8	*t = "diouxspXDOUSC%";
 
 	i = ft_strindexof(t, **s);
 	if ((ft_isupper(**s) || i >= 5) && **s != 'C')
@@ -43,9 +55,10 @@ void parse_type(const char **s, t_fmt *f)
 ** i: ième format parsé
 */
 
-t_fmt _parse_spec(const char **s, u32 *n)
+t_fmt		i_parse_spec(const char **s, t_u32 *n)
 {
 	t_fmt f;
+
 	ft_bzero(&f, sizeof(f));
 	f.param = -1;
 	parse_parameter(s, &f);
@@ -63,11 +76,12 @@ t_fmt _parse_spec(const char **s, u32 *n)
 /*
 ** Wrapper qui renvoie la structure sous forme de maillon.
 */
-t_dlist *parse_spec(const char **s, u32 *n)
+
+t_dlist		*parse_spec(const char **s, t_u32 *n)
 {
 	t_fmt f;
 
-	f = _parse_spec(s, n);
+	f = i_parse_spec(s, n);
 	return (ftext_lstnewelem(&f, sizeof(f)));
 }
 
@@ -75,20 +89,22 @@ t_dlist *parse_spec(const char **s, u32 *n)
 ** Construit une liste de format, les lies à leur données
 */
 
-t_dlisthead *parse_fmt(const char *s, va_list ap)
+t_dlisthead	*parse_fmt(const char *s, va_list ap)
 {
-	t_dlisthead *l;
-	u32 i;
+	t_dlisthead	*l;
+	t_u32		i;
 
 	l = ftext_lstnew();
 	i = 0;
 	while (*s)
 	{
 		if (*s == '%')
-			ftext_lstpush_back(l, parse_spec(&s, (++i, &i)));
+		{
+			++i;
+			ftext_lstpush_back(l, parse_spec(&s, &i));
+		}
 		++s;
 	}
-	//ftext_lstiter(l, &dump_state);
 	fill_data(l, ap);
 	return (l);
 }

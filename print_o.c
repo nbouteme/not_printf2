@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 16:05:51 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/24 11:21:41 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/24 14:15:21 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 #include "ft_printf.h"
 
-static i64	max(i64 a, i64 b)
+static t_i64	max(t_i64 a, t_i64 b)
 {
 	return (a > b ? a : b);
 }
 
-static int	calc_size(t_fmt *a, i64 len)
+static int		calc_size(t_fmt *a, t_i64 len)
 {
 	int	total;
 
@@ -29,9 +29,9 @@ static int	calc_size(t_fmt *a, i64 len)
 	return (total);
 }
 
-static u64	actually_write_this_shit(t_fmt *a, i64 len, char *t)
+static t_u64	actually_write_this_shit(t_fmt *a, t_i64 len, char *t)
 {
-	u64 total;
+	t_u64 total;
 
 	total = 0;
 	if (a->flags[4] && t[0] - 48)
@@ -48,16 +48,16 @@ static u64	actually_write_this_shit(t_fmt *a, i64 len, char *t)
 	return (total);
 }
 
-u64			f_print_o(t_fmt *a)
+t_u64			f_print_o(t_fmt *a)
 {
-	u64	r;
-	i64	d;
-	i8	*t;
-	i64	n;
-	i64 w;
+	t_u64	r;
+	t_i64	d;
+	t_i8	*t;
+	t_i64	n;
+	t_i64	w;
 
 	r = 0;
-	d = (u64)a->data->c;
+	d = (t_u64)a->data->c;
 	t = ft_luitoa(d, "01234567");
 	n = ft_strlen(t);
 	a->flags[3] &= a->precision < 0;

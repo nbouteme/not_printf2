@@ -6,16 +6,16 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 15:34:39 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/23 15:34:51 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/24 14:13:30 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-u64 f_print_s(t_fmt *arg)
+t_u64	f_print_s(t_fmt *arg)
 {
-	u64 tot;
-	s64 n;
+	t_u64 tot;
+	t_s64 n;
 
 	tot = 0;
 	arg->data->c = arg->data->c ? arg->data->c : "(null)";

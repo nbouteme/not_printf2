@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 16:13:03 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/24 12:20:22 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/24 14:14:39 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 char *g_xconv[] = {"0123456789abcdef", "0123456789ABCDEF"};
 char *g_hash[] = {"0x", "0X"};
 
-static i64	max(i64 a, i64 b)
+static t_i64		max(t_i64 a, t_i64 b)
 {
 	return (a > b ? a : b);
 }
 
-static int	calc_size(t_fmt *a, i64 len, i64 val)
+static int			calc_size(t_fmt *a, t_i64 len, t_i64 val)
 {
 	int	total;
 
@@ -30,9 +30,9 @@ static int	calc_size(t_fmt *a, i64 len, i64 val)
 	return (total);
 }
 
-static u64	actually_write_this_shit(t_fmt *a, i64 len, char *t)
+static t_u64		actually_write_this_shit(t_fmt *a, t_i64 len, char *t)
 {
-	u64 total;
+	t_u64 total;
 
 	total = 0;
 	if ((a->flags[4] && t[0] - 48) || a->type.c == 'p')
@@ -41,29 +41,30 @@ static u64	actually_write_this_shit(t_fmt *a, i64 len, char *t)
 		a->width -= !a->flags[0] << 1;
 	}
 	total += print_n(a->precision - len, '0');
-	if (a->flags[4] || t[0] - 48)
+	if ((a->flags[4] && t[0] - 48) || (a->precision || t[0] - 48))
 		total += write(1, t, len);
 	else if (a->width > 0)
 		total += write(1, " ", 1);
 	return (total);
 }
 
-u64			f_print_x(t_fmt *a)
+t_u64				f_print_x(t_fmt *a)
 {
-	u64	r;
-	i64	d;
-	i8	*t;
-	i64	n;
-	i64 w;
+	t_u64	r;
+	t_i64	d;
+	t_i8	*t;
+	t_i64	n;
+	t_i64	w;
 
 	r = 0;
-	d = (u64)a->data->c;
+	d = (t_u64)a->data->c;
 	t = ft_luitoa(d, g_xconv[a->type.c == 'X']);
 	n = ft_strlen(t);
 	a->flags[3] &= a->precision < 0;
 	a->flags[0] |= a->width < 0;
 	a->width = a->width < 0 ? -a->width : a->width;
-	a->precision = a->flags[3] ? a->width - (a->width > n) : a->precision;
+	a->precision = a->flags[3] ? a->width - ((a->width > n && d) << 1) :
+		a->precision;
 	a->width = a->flags[3] ? 0 : a->width;
 	w = calc_size(a, n, d);
 	if (!a->flags[0])

@@ -6,21 +6,21 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/23 15:38:02 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/24 10:21:50 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/24 14:16:13 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static i64	max(i64 a, i64 b)
+static t_i64	max(t_i64 a, t_i64 b)
 {
 	return (a > b ? a : b);
 }
 
-static int	calc_size(t_fmt *a, i64 len, i64 d)
+static int		calc_size(t_fmt *a, t_i64 len, t_i64 d)
 {
-	int	total;
-	u8	neg;
+	int		total;
+	t_u8	neg;
 
 	neg = d < 0;
 	total = max(len, a->precision) + (!a->flags[0] &&
@@ -28,9 +28,9 @@ static int	calc_size(t_fmt *a, i64 len, i64 d)
 	return (total);
 }
 
-static u64	actually_write_this_shit(t_fmt *a, i64 len, char *t, char n)
+static t_u64	actually_write_this_shit(t_fmt *a, t_i64 len, char *t, char n)
 {
-	u64 total;
+	t_u64 total;
 
 	total = 0;
 	if (n)
@@ -52,17 +52,17 @@ static u64	actually_write_this_shit(t_fmt *a, i64 len, char *t, char n)
 	return (total);
 }
 
-u64			f_print_d(t_fmt *a)
+t_u64			f_print_d(t_fmt *a)
 {
-	u64	r;
-	i64	d;
-	i8	*t;
-	i64	n;
-	i8	z;
+	t_u64	r;
+	t_i64	d;
+	t_i8	*t;
+	t_i64	n;
+	t_i8	z;
 
 	r = 0;
-	d = (u64)a->data->c | (!!((u64)a->data->c & (1L << 31)) * (~0L << 32));
-	d = a->type.lf ? (u64)a->data->c : d;
+	d = (t_u64)a->data->c | (!!((t_u64)a->data->c & (1L << 31)) * (~0L << 32));
+	d = a->type.lf ? (t_u64)a->data->c : d;
 	t = ft_luitoa(d < 0 ? -d : d, "0123456789");
 	n = ft_strlen(t);
 	z = d < 0;
