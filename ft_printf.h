@@ -6,7 +6,7 @@
 /*   By: nbouteme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/24 13:25:28 by nbouteme          #+#    #+#             */
-/*   Updated: 2016/02/24 13:54:38 by nbouteme         ###   ########.fr       */
+/*   Updated: 2016/02/24 14:34:56 by nbouteme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include "cdecl"
+# include "test.h"
 
 typedef struct	s_type
 {
@@ -50,8 +51,6 @@ typedef struct	s_fmt
 	t_s32		precision;
 	t_data		*data;
 }				t_fmt;
-
-typedef t_u64	(*t_fmt_fun)	(t_fmt *);
 
 typedef struct	s_va
 {
@@ -87,21 +86,21 @@ void			infer_flags(t_fmt *f);
 void			parse_parameter(const char **s, t_fmt *f);
 int				ft_vprintf(const char *fmt, va_list ap);
 
-t_u64				f_print_p(t_fmt *arg);
-t_u64				f_print_naught(t_fmt *a);
-t_u64				print_n(t_i64 n, char c);
-t_u64				f_print_per(t_fmt *arg);
-t_u64				f_print_u(t_fmt *a);
-t_u64				f_print_c(t_fmt *arg);
-t_u64				f_print_bs(t_fmt *arg);
-t_u64				print_spec(const char **s, t_dlisthead *args, t_u32 *i);
-t_u64				print_spec(const char **s, t_dlisthead *args, t_u32 *i);
-t_i32				cmp_forder(const t_dlist *ba, const t_dlist *bb);
-t_i32				cmp_spec(t_dlist *e, t_fmt *f);
-t_u64				f_print_s(t_fmt *arg);
-t_u64				f_print_d(t_fmt *a);
-t_u64				print_n(t_i64 n, char c);
-t_u64				f_print_o(t_fmt *a);
-t_u64				f_print_x(t_fmt *a);
+t_u64			f_print_p(t_fmt *arg);
+t_u64			f_print_naught(t_fmt *a);
+t_u64			print_n(t_i64 n, char c);
+t_u64			f_print_per(t_fmt *arg);
+t_u64			f_print_u(t_fmt *a);
+t_u64			f_print_c(t_fmt *arg);
+t_u64			f_print_bs(t_fmt *arg);
+t_u64			print_spec(const char **s, t_dlisthead *args, t_u32 *i);
+t_u64			print_spec(const char **s, t_dlisthead *args, t_u32 *i);
+t_i32			cmp_forder(const t_dlist *ba, const t_dlist *bb);
+t_i32			cmp_spec(t_dlist *e, t_fmt *f);
+t_u64			f_print_s(t_fmt *arg);
+t_u64			f_print_d(t_fmt *a);
+t_u64			print_n(t_i64 n, char c);
+t_u64			f_print_o(t_fmt *a);
+t_u64			f_print_x(t_fmt *a);
 
 #endif
